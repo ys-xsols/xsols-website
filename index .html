@@ -896,4 +896,14 @@
 
     // フォーム送信ハンドラ
     function handleSubmit(e) {
-      const btn
+      const btn = document.querySelector('.btn-submit');
+      btn.textContent = '送信中…';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = '送信しました';
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html>
