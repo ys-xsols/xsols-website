@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>クロスソル株式会社 | XSOLS Inc.</title>
+  <meta name="description" content="クロスソル株式会社。投資・情報発信・コンテンツ制作を通じて、新しい知的コミュニティの形成を目指します。">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;500;600&family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink:       #1a1a18;
+      --ink-soft:  #3d3d38;
+      --ink-muted: #7a7a6e;
+      --paper:     #f5f2eb;
+      --paper-dark:#ede9df;
+      --moss:      #4a5740;
+      --moss-light:#6b7a5e;
+      --gold:      #a08c5a;
+      --gold-light:#c4a96e;
+      --border:    rgba(26,26,24,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background-color: var(--paper);
+      color: var(--ink);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.5;
+    }
+
+    /* ── HEADER / NAV ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 900;
+      padding: 1.5rem 4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(245,242,235,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.35rem;
+      letter-spacing: 0.15em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .logo span {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    nav { display: flex; gap: 2.5rem; align-items: center; }
+    nav a {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--ink-soft);
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+    nav a::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0; right: 0; height: 1px;
+      background: var(--gold);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform 0.3s;
+    }
+    nav a:hover { color: var(--ink); }
+    nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 10rem 5rem 8rem 8rem;
+      position: relative; z-index: 2;
+    }
+
+    .hero-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(2.4rem, 4vw, 3.8rem);
+      font-weight: 500;
+      line-height: 1.45;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--moss);
+      display: block;
+    }
+
+    .hero-sub {
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      line-height: 2;
+      max-width: 38ch;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      color: var(--moss);
+      text-decoration: none;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--moss-light);
+      transition: gap 0.3s, color 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .hero-cta:hover { gap: 1.25rem; color: var(--ink); }
+    .hero-cta .arrow { font-size: 1.1rem; }
+
+    .hero-right {
+      position: relative;
+      background: var(--moss);
+      overflow: hidden;
+    }
+    .hero-right::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: 
+        radial-gradient(ellipse at 30% 40%, rgba(160,140,90,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 80%, rgba(26,26,24,0.4) 0%, transparent 50%);
+    }
+
+    /* 山のSVG装飾 */
+    .hero-mountain {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      opacity: 0.15;
+    }
+
+    .hero-kanji {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(8rem, 15vw, 14rem);
+      font-weight: 600;
+      color: rgba(255,255,255,0.06);
+      letter-spacing: -0.05em;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .hero-quote {
+      position: absolute; bottom: 4rem; left: 4rem; right: 4rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(245,242,235,0.65);
+      line-height: 1.8;
+      border-left: 2px solid rgba(160,140,90,0.5);
+      padding-left: 1.5rem;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 8rem 0; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 4rem;
+    }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 500;
+      line-height: 1.5;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .divider {
+      width: 3rem; height: 1px;
+      background: var(--gold);
+      margin: 2rem 0;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--paper-dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .about-aside {
+      position: sticky; top: 8rem;
+    }
+
+    .about-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      font-weight: 300;
+      color: var(--gold-light);
+      opacity: 0.4;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .about-body p {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.5rem;
+      line-height: 2;
+    }
+
+    .about-body strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .profile-block {
+      margin-top: 3rem;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      background: var(--paper);
+    }
+
+    .profile-name {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+    }
+    .profile-role {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      margin-bottom: 1rem;
+    }
+    .profile-bio {
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      line-height: 1.9;
+    }
+
+    /* ── BUSINESS ── */
+    #business {
+      background: var(--paper);
+    }
+
+    .business-header {
+      max-width: 600px;
+      margin-bottom: 5rem;
+    }
+
+    .business-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+    }
+
+    .business-card {
+      background: var(--paper);
+      padding: 3rem 2.5rem;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .business-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--moss);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .business-card:hover { background: var(--paper-dark); }
+    .business-card:hover::before { transform: scaleX(1); }
+
+    .card-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--gold-light);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .card-body {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      line-height: 1.9;
+    }
+
+    /* ── CONTENT / NOTE ── */
+    #content {
+      background: var(--moss);
+      color: var(--paper);
+    }
+
+    #content .section-label { color: var(--gold-light); opacity: 0.8; }
+
+    #content .section-title { color: var(--paper); }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .content-body p {
+      font-size: 0.95rem;
+      color: rgba(245,242,235,0.75);
+      line-height: 2.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .content-divider {
+      width: 3rem; height: 1px;
+      background: var(--gold-light);
+      margin: 2rem 0;
+      opacity: 0.6;
+    }
+
+    .pen-name {
+      display: inline-block;
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .pen-desc {
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: rgba(245,242,235,0.4);
+      margin-bottom: 2.5rem;
+    }
+
+    .note-link {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      color: var(--gold-light);
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      border: 1px solid rgba(160,140,90,0.5);
+      transition: background 0.3s, color 0.3s;
+    }
+    .note-link:hover {
+      background: var(--gold);
+      color: var(--ink);
+      border-color: var(--gold);
+    }
+
+    .content-visual {
+      position: relative;
+      aspect-ratio: 3/4;
+      border: 1px solid rgba(245,242,235,0.1);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .content-visual-inner {
+      text-align: center;
+    }
+
+    .content-kanji {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 7rem;
+      font-weight: 600;
+      color: rgba(245,242,235,0.06);
+      line-height: 1;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .series-list {
+      list-style: none;
+      text-align: left;
+      padding: 2rem;
+    }
+    .series-list li {
+      font-size: 0.82rem;
+      color: rgba(245,242,235,0.5);
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(245,242,235,0.06);
+      letter-spacing: 0.05em;
+      display: flex; align-items: baseline; gap: 0.75rem;
+    }
+    .series-list li::before {
+      content: '—';
+      color: var(--gold-light);
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--paper-dark);
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.8fr;
+      gap: 6rem;
+    }
+
+    .contact-info p {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      line-height: 2;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-detail {
+      margin-top: 2rem;
+    }
+    .contact-detail dt {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+    .contact-detail dd {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.2rem;
+    }
+
+    /* フォームの外枠 */
+    .form-wrap {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      padding: 3rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.8rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 0;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      resize: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--moss);
+    }
+    .form-group textarea { min-height: 100px; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--moss);
+      color: var(--paper);
+      border: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 0.5rem;
+    }
+    .btn-submit:hover { background: var(--ink); }
+
+    .form-note {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      margin-top: 1rem;
+      line-height: 1.8;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(245,242,235,0.4);
+      padding: 3rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: rgba(245,242,235,0.6);
+      letter-spacing: 0.15em;
+    }
+    .footer-logo span { color: var(--gold); font-style: italic; }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      header { padding: 1.2rem 2rem; }
+      nav { gap: 1.5rem; }
+
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 8rem 2.5rem 4rem; }
+      .hero-right { min-height: 50vw; }
+
+      .about-grid,
+      .content-grid,
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+      .business-grid { grid-template-columns: 1fr; }
+
+      .container { padding: 0 2.5rem; }
+      section { padding: 5rem 0; }
+
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="#" class="logo">XSOLS<span>.</span></a>
+    <nav>
+      <a href="#about">会社概要</a>
+      <a href="#business">事業内容</a>
+      <a href="#content">コンテンツ</a>
+      <a href="#contact">お問い合わせ</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-label">XSOLS Inc. — Since 2004</p>
+      <h1 class="hero-title">
+        知を蓄え、<br>
+        <em>谷を拓く。</em>
+      </h1>
+      <p class="hero-sub">
+        投資・情報発信・コンテンツ制作を通じて、
+        知的水準の高い人々が集う新しいコミュニティの形成を目指します。
+      </p>
+      <a href="#about" class="hero-cta">
+        私たちについて <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-kanji">風の谷</div>
+      <svg class="hero-mountain" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,300 L0,200 L100,120 L200,180 L320,60 L440,160 L560,80 L680,150 L800,100 L800,300 Z" fill="rgba(245,242,235,1)"/>
+      </svg>
+      <blockquote class="hero-quote">
+        「失敗したリゾート地を再定義し、<br>
+        知的水準の高い人々が集うコミュニティを創造する」
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-aside reveal">
+          <p class="section-label">About</p>
+          <div class="about-num">20</div>
+          <h2 class="section-title">20年の経験を、<br>新たな形へ。</h2>
+          <div class="divider"></div>
+        </div>
+        <div class="about-body reveal">
+          <p>
+            クロスソル株式会社は2004年に設立されたITコンサルティング会社です。
+            20年間にわたり、航空・海運・自動車・金融・医療など多業種の大規模プロジェクトを支援してきました。
+          </p>
+          <p>
+            2026年より、<strong>投資・コンテンツ制作・情報発信</strong>を主軸とした新たなフェーズへ移行します。
+            蓄積してきたITプロジェクトの知見と経営経験を、より広く社会に還元することを目指しています。
+          </p>
+          <p>
+            長野・群馬の山間部における<strong>「風の谷構想」</strong>——知的水準の高い人々が集う会員制コミュニティの実現に向け、
+            一歩ずつ土台を築いています。
+          </p>
+
+          <div class="profile-block">
+            <p class="profile-name">清水 千穂</p>
+            <p class="profile-role">代表取締役社長</p>
+            <p class="profile-bio">
+              クロスソル株式会社 代表取締役。
+              会社の新たな事業フェーズを牽引し、
+              投資運用とコンテンツ事業の基盤構築を担う。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUSINESS -->
+  <section id="business">
+    <div class="container">
+      <div class="business-header reveal">
+        <p class="section-label">Business</p>
+        <h2 class="section-title">3つの事業領域</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="business-grid">
+        <div class="business-card reveal">
+          <div class="card-num">01</div>
+          <h3 class="card-title">資産運用・投資</h3>
+          <p class="card-body">
+            国内高配当株・成長株・インデックス投資を組み合わせた長期的な資産形成。
+            信用取引を排した現物投資により、安定的なキャッシュフローの確保を目指します。
+          </p>
+        </div>
+        <div class="business-card reveal">
+          <div class="card-num">02</div>
+          <h3 class="card-title">コンテンツ制作・情報発信</h3>
+          <p class="card-body">
+            ITプロジェクト管理・上流工程・AI活用に関する専門知識を
+            NoteやSNSを通じて発信。実践から生まれた知見を広く届けます。
+          </p>
+        </div>
+        <div class="business-card reveal">
+          <div class="card-num">03</div>
+          <h3 class="card-title">風の谷構想</h3>
+          <p class="card-body">
+            衰退したリゾート地を知的コミュニティとして再定義する中長期プロジェクト。
+            自然豊かな環境での自給自足と知的交流の場を創造します。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT / NOTE -->
+  <section id="content">
+    <div class="container">
+      <div class="content-grid">
+        <div class="content-body reveal">
+          <p class="section-label">Contents</p>
+          <h2 class="section-title">Noteで読む、<br>実践の知恵。</h2>
+          <div class="content-divider"></div>
+          <p>
+            20年・32案件以上のITプロジェクト経験から蒸留した知識を、
+            実践的なコンテンツとして発信していきます。
+          </p>
+          <p>
+            PMO設計・AI活用による業務効率化・超上流工程の落とし穴など、
+            現場で使える情報を順次お届けする予定です。
+          </p>
+
+          <div class="content-divider"></div>
+
+          <span class="pen-name">風の谷の開拓者</span>
+          <p class="pen-desc">KAZE NO TANI NO KAITAKUSHA</p>
+
+          <p style="font-size:0.85rem; color:rgba(245,242,235,0.45); letter-spacing:0.12em; margin-top:0.5rem;">
+            ── コンテンツ準備中。近日公開予定。──
+          </p>
+        </div>
+
+        <div class="content-visual reveal">
+          <div class="content-visual-inner">
+            <span class="content-kanji">開</span>
+            <ul class="series-list">
+              <li>なぜ上流工程で8割が決まるのか</li>
+              <li>PMOの仕事をAIで半分にする方法</li>
+              <li>Flagxsでプロジェクト管理を変える</li>
+              <li>EnterpriseArchitectの実務活用法</li>
+              <li>炎上プロジェクトを立て直した3つの手順</li>
+              <li>オフショア開発を成功させる設計技法</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="reveal">
+          <p class="section-label">Contact</p>
+          <h2 class="section-title">お問い合わせ</h2>
+          <div class="divider"></div>
+          <div class="contact-info">
+            <p>コンテンツに関するご質問、<br>事業に関するお問い合わせは<br>こちらからどうぞ。</p>
+          </div>
+          <dl class="contact-detail">
+            <dt>会社名</dt>
+            <dd>クロスソル株式会社</dd>
+            <dt>所在地</dt>
+            <dd>埼玉県さいたま市</dd>
+            <dt>Email</dt>
+            <dd><a href="mailto:info@xsols.jp">info@xsols.jp</a></dd>
+            <dt>設立</dt>
+            <dd>2004年3月</dd>
+          </dl>
+        </div>
+
+        <div class="form-wrap reveal">
+          <form
+            action="https://docs.google.com/forms/d/e/1FAIpQLSdK5EsBmUXTZ3NaN2uhdTOEeSTA-is2ssecRMK71WuIjJhyRQ/formResponse"
+            method="POST"
+            target="_blank"
+            id="contactForm"
+            onsubmit="handleSubmit(event)"
+          >
+            <div class="form-group">
+              <label for="name">お名前</label>
+              <input type="text" id="name" name="entry.766725910" required placeholder="山田 太郎">
+            </div>
+            <div class="form-group">
+              <label for="email">メールアドレス</label>
+              <input type="email" id="email" name="entry.116364477" required placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+              <label for="category">お問い合わせ種別</label>
+              <select id="category" name="entry.176596607">
+                <option value="">選択してください</option>
+                <option value="コンテンツ・Note記事について">コンテンツ・Note記事について</option>
+                <option value="事業・投資に関するご相談">事業・投資に関するご相談</option>
+                <option value="メディア・取材のご依頼">メディア・取材のご依頼</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">お問い合わせ内容</label>
+              <textarea id="message" name="entry.1826349206" required placeholder="お気軽にご連絡ください。"></textarea>
+            </div>
+            <button type="submit" class="btn-submit">送信する</button>
+          </form>
+          <p class="form-note">
+            ※ Googleフォームを利用して送信します。<br>
+            いただいた情報は、お問い合わせへの返信以外には使用しません。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">XSOLS<span>.</span> Inc.</div>
+    <p class="footer-copy">© 2004–2026 クロスソル株式会社. All rights reserved.</p>
+  </footer>
+
+  <!-- Google Analytics -->
+  <!-- 
+    以下のコードをGoogle Analyticsで取得した測定IDに変更してください
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+  -->
+
+  <script>
+    // スクロールアニメーション
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, i * 80);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    reveals.forEach(el => observer.observe(el));
+
+    // ヘッダーのスクロール追従
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.style.padding = '1rem 4rem';
+      } else {
+        header.style.padding = '1.5rem 4rem';
+      }
+    });
+
+    // フォーム送信ハンドラ
+    function handleSubmit(e) {
+      const btn = document.querySelector('.btn-submit');
+      btn.textContent = '送信中…';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = '送信しました';
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
